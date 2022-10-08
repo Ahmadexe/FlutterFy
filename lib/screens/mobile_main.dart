@@ -36,7 +36,7 @@ class _MobileMainState extends State<MobileMain> {
         backgroundColor: Colors.black,
         color: Colors.grey,
         activeColor: Colors.white,
-        tabBackgroundColor: Colors.grey.shade800,
+        tabBackgroundColor: Colors.grey.shade900,
         gap: 8,
         onTabChange: (index) {
           _pageController.jumpToPage(index);
