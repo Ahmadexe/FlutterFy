@@ -36,13 +36,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       uriType: UriType.EXTERNAL,
                       ignoreCase: true),
                   builder: (context, item) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: item.data?.length,
-                      itemBuilder: (context, index) {
-                        return SongCard();
-                      }
+                    if (item.data == null) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
+                    }
+                    //no songs found
+                    if (item.data!.isEmpty) {
+                      return const Center(
+                        child: Text("No Songs Found"),
+                      );
+                    }
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: item.data!.length,
+                        itemBuilder: (context, index) {
+                          return SongCard();
+                        });
                   })
             ],
           ),
