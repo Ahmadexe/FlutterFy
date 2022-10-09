@@ -3,13 +3,14 @@ import 'package:fy/services/url_services.dart';
 
 class ChannelText extends StatelessWidget {
   final String text;
-  const ChannelText({required this.text,super.key});
+  final String url;
+  const ChannelText({required this.url,required this.text,super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await UrlServices().launchTheUrl("https://www.youtube.com/results?search_query=post+malone");
+        await UrlServices().launchTheUrl(url);
       },
       child: Column(
         children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fy/database/databse_helper.dart';
 import 'package:fy/utils/colors.dart';
 import 'package:fy/widgets/channel_text.dart';
 import 'package:fy/widgets/genre_card.dart';
@@ -11,6 +12,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late List<Map<String, dynamic>> channels;
+  bool _loading = false;
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    setState(() {
+      _loading = true;
+    });
+    channels = await DatabaseHelper.instance.queryAll();
+    setState(() {
+      _loading = false;
+    });
+    print(channels.length);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,16 +80,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20,),
             Padding(padding: const EdgeInsets.all(8),
-            child: Column(
+            child: 
+            _loading?
+            const Center(child: CircularProgressIndicator(color: Colors.white,),)
+            :
+            channels.isEmpty?
+            Center(child: Column(
               children: const [
-                ChannelText(text: "postmalone"),
-                ChannelText(text: "postmalone"),
-                ChannelText(text: "postmalone"),
-                ChannelText(text: "postmalone"),
-                ChannelText(text: "postmalone"),
+              SizedBox(height: 50),
+                Text("No channels to display.", style: TextStyle(color: Colors.white),),
               ],
+            ))
+            : 
+            ListView.builder(
+              itemCount: channels.length,
+              itemBuilder: (context, index) {
+                return ChannelText(text: channels[index]['name'], url: channels[index]['url'],);   
+              }),
             )
-            ,)
           ],
         ),
       ),
