@@ -51,16 +51,18 @@ class _SongScreenState extends State<SongScreen> {
                       }
                       return ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: item.data!.length,
                           itemBuilder: (context, index) {
-                            if (!item.data![index].title.contains("AUD") && !item.data![index].title.contains("tone") && !item.data![index].title.contains("Slack")){ 
-                            return SongCard(
-                              header: item.data![index].title,
-                              desc: item.data![index].displayName,
-                            );
+                            if (!item.data![index].title.contains("AUD") &&
+                                !item.data![index].title.contains("tone") &&
+                                !item.data![index].title.contains("Slack")) {
+                              return SongCard(
+                                header: item.data![index].title,
+                                desc: item.data![index].displayName,
+                              );
                             } else {
-                              return SizedBox();
+                              return const SizedBox();
                             }
                             // return SizedBox();
                           });
