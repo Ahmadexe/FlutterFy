@@ -59,15 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 20,),
-            Padding(padding: EdgeInsets.all(8),
+            Padding(padding: const EdgeInsets.all(8),
             child: Column(
-              children: [
+              children: const [
                 ChannelText(text: "postmalone"),
                 ChannelText(text: "postmalone"),
                 ChannelText(text: "postmalone"),
                 ChannelText(text: "postmalone"),
                 ChannelText(text: "postmalone"),
-
               ],
             )
             ,)
