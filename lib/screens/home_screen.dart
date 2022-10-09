@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fy/utils/colors.dart';
+import 'package:fy/widgets/channel_text.dart';
 import 'package:fy/widgets/genre_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,10 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: mobileBackground,
         title: Row(
           children: const [
-            Text("Welcome "),
+            Text("Welcome ", style: TextStyle(fontSize: 24),),
             Text(
               "Ahmad",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             )
           ],
         ),
@@ -50,13 +51,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 40,),
+            const SizedBox(height: 70,),
             Row(
               children: const [
-                Text("Famous",style: TextStyle(color: Colors.white, fontSize: 19),),
-                Text(" Channels", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 19),)
+                Text("Famous",style: TextStyle(color: Colors.white, fontSize: 24),),
+                Text(" Channels", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),)
+              ],
+            ),
+            const SizedBox(height: 20,),
+            Padding(padding: EdgeInsets.all(8),
+            child: Column(
+              children: [
+                ChannelText(text: "postmalone"),
+                ChannelText(text: "postmalone"),
+                ChannelText(text: "postmalone"),
+                ChannelText(text: "postmalone"),
+                ChannelText(text: "postmalone"),
+
               ],
             )
+            ,)
           ],
         ),
       ),
