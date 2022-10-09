@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fy/utils/colors.dart';
 import 'package:fy/widgets/song_card.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongScreen extends StatefulWidget {
@@ -60,6 +61,7 @@ class _SongScreenState extends State<SongScreen> {
                               return SongCard(
                                 header: item.data![index].title,
                                 desc: item.data![index].displayName,
+                                uri: item.data![index].uri,
                               );
                             } else {
                               return const SizedBox();
