@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fy/database/databse_helper.dart';
+import 'package:fy/screens/add_channels_screen.dart';
 import 'package:fy/utils/colors.dart';
 import 'package:fy/widgets/channel_text.dart';
 import 'package:fy/widgets/genre_card.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.grey.shade900,
           foregroundColor: Colors.white,
           elevation: 10,
-          onPressed: () {},
+          onPressed: () {
+            Get.to(const AddChannelScreen());
+          },
           child: const Icon(Icons.add)),
       backgroundColor: mobileBackground,
       appBar: AppBar(
@@ -92,15 +96,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ))
             : 
-            ListView.builder(
-              itemCount: channels.length,
-              itemBuilder: (context, index) {
-                return ChannelText(text: channels[index]['name'], url: channels[index]['url'],);   
-              }),
+            RefreshIndicator(
+              backgroundColor: secondaryColor,
+              color: Colors.white,
+              onRefresh: _refresh,
+              child: ListView.builder(
+                itemCount: channels.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ChannelText(text: channels[index]['name'], url: channels[index]['url'],);   
+                }),
+            ),
             )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _refresh() async {
+    var data = await DatabaseHelper.instance.queryAll();
+    setState(() {
+      channels = data;  
+    });
   }
 }
