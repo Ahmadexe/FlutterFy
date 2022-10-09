@@ -14,6 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: mobileBackground,
       appBar: AppBar(
+        toolbarHeight: 130,
         backgroundColor: mobileBackground,
         title: Row(
           children: const [
