@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fy/screens/home_screen.dart';
+import 'package:fy/screens/songs_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MobileMain extends StatefulWidget {
@@ -30,7 +31,11 @@ class _MobileMainState extends State<MobileMain> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: const [HomeScreen()],
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          HomeScreen(),
+          SongScreen(),
+        ],
       ),
       bottomNavigationBar: GNav(
         backgroundColor: Colors.black,
@@ -47,16 +52,16 @@ class _MobileMainState extends State<MobileMain> {
             text: 'Home',
           ),
           GButton(
-            icon: CupertinoIcons.search,
-            text: 'Search',
+            icon: CupertinoIcons.music_note,
+            text: 'Songs',
           ),
           GButton(
             icon: CupertinoIcons.music_albums,
             text: 'Albums',
           ),
           GButton(
-            icon: CupertinoIcons.profile_circled,
-            text: 'Developer',
+            icon: CupertinoIcons.star_fill,
+            text: 'Liked',
           ),
         ],
       ),

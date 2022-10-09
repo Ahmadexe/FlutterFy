@@ -11,7 +11,7 @@ class SongCard extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height * (1/10),
         width: MediaQuery.of(context).size.width * 0.9,
-        color: Colors.grey.shade900
+        color: secondaryColor
       ),
     );
   }
