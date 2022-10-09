@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 70,),
             Row(
               children: const [
-                Text("Famous",style: TextStyle(color: Colors.white, fontSize: 24),),
+                Text("Favourite",style: TextStyle(color: Colors.white, fontSize: 24),),
                 Text(" Channels", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),)
               ],
             ),

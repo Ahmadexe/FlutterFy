@@ -12,7 +12,7 @@ class SongScreen extends StatefulWidget {
 }
 
 class _SongScreenState extends State<SongScreen> {
-    final OnAudioQuery _audioQuery = OnAudioQuery();
+  final OnAudioQuery _audioQuery = OnAudioQuery();
 
   @override
   void initState() {
@@ -24,39 +24,49 @@ class _SongScreenState extends State<SongScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mobileBackground,
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Center(
-          child: Column(
-            children: [
-              FutureBuilder<List<SongModel>>(
-                  future: _audioQuery.querySongs(
-                      sortType: null,
-                      orderType: OrderType.ASC_OR_SMALLER,
-                      uriType: UriType.EXTERNAL,
-                      ignoreCase: true),
-                  builder: (context, item) {
-                    if (item.data == null) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    //no songs found
-                    if (item.data!.isEmpty) {
-                      return const Center(
-                        child: Text("No Songs Found"),
-                      );
-                    }
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: item.data!.length,
-                        itemBuilder: (context, index) {
-                          return const SongCard();
-                          // return SizedBox();
-                        });
-                  })
-            ],
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Center(
+            child: Column(
+              children: [
+                FutureBuilder<List<SongModel>>(
+                    future: _audioQuery.querySongs(
+                        sortType: null,
+                        orderType: OrderType.ASC_OR_SMALLER,
+                        uriType: UriType.EXTERNAL,
+                        ignoreCase: true),
+                    builder: (context, item) {
+                      if (item.data == null) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      //no songs found
+                      if (item.data!.isEmpty) {
+                        return const Center(
+                          child: Text("No Songs Found"),
+                        );
+                      }
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: item.data!.length,
+                          itemBuilder: (context, index) {
+                            if (!item.data![index].title.contains("AUD") && !item.data![index].title.contains("tone") && !item.data![index].title.contains("Slack")){ 
+                            return SongCard(
+                              header: item.data![index].title,
+                              desc: item.data![index].displayName,
+                            );
+                            } else {
+                              return SizedBox();
+                            }
+                            // return SizedBox();
+                          });
+                    })
+              ],
+            ),
           ),
         ),
       ),

@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:fy/utils/colors.dart';
 
 class SongCard extends StatelessWidget {
-  const SongCard({super.key});
+  final String header;
+  final String desc;
+  const SongCard({required this.header,required this.desc,super.key});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
-      child: Container(
-        height: MediaQuery.of(context).size.height * (1/10),
-        width: MediaQuery.of(context).size.width * 0.9,
-        color: secondaryColor
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(header, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),),
+          Text(desc, style: const TextStyle(fontSize: 16,color: Colors.grey)),
+          const Divider(color: secondaryColor,),
+          const SizedBox(height: 10,)
+        ],
       ),
     );
   }
