@@ -62,6 +62,8 @@ class _SongScreenState extends State<SongScreen> {
                                 header: item.data![index].title,
                                 desc: item.data![index].displayName,
                                 uri: item.data![index].uri,
+                                index: index,
+                                songs: item.data!,
                               );
                             } else {
                               return const SizedBox();
