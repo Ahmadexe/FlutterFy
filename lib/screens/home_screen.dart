@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.add)),
       backgroundColor: mobileBackground,
       appBar: AppBar(
-        toolbarHeight: 130,
+        toolbarHeight: 100,
         backgroundColor: mobileBackground,
         title: Row(
           children: const [
