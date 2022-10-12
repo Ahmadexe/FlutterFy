@@ -50,7 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: mobileBackground,
         title: Row(
           children: const [
-            Text("Welcome ", style: TextStyle(fontSize: 24),),
+            Text(
+              "Welcome ",
+              style: TextStyle(fontSize: 24),
+            ),
             Text(
               "Ahmad",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -75,38 +78,60 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 70,),
+            const SizedBox(
+              height: 70,
+            ),
             Row(
               children: const [
-                Text("Favourite",style: TextStyle(color: Colors.white, fontSize: 24),),
-                Text(" Channels", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),)
+                Text(
+                  "Favourite",
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+                Text(
+                  " Channels",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 24),
+                )
               ],
             ),
-            const SizedBox(height: 20,),
-            Padding(padding: const EdgeInsets.all(8),
-            child: 
-            _loading?
-            const Center(child: CircularProgressIndicator(color: Colors.white,),)
-            :
-            channels.isEmpty?
-            Center(child: Column(
-              children: const [
-              SizedBox(height: 50),
-                Text("No channels to display.", style: TextStyle(color: Colors.white),),
-              ],
-            ))
-            : 
-            RefreshIndicator(
-              backgroundColor: secondaryColor,
-              color: Colors.white,
-              onRefresh: _refresh,
-              child: ListView.builder(
-                itemCount: channels.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ChannelText(text: channels[index]['name'], url: channels[index]['url'],);   
-                }),
+            const SizedBox(
+              height: 20,
             ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: _loading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : channels.isEmpty
+                      ? Center(
+                          child: Column(
+                          children: const [
+                            SizedBox(height: 50),
+                            Text(
+                              "No channels to display.",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ))
+                      : RefreshIndicator(
+                          backgroundColor: secondaryColor,
+                          color: Colors.white,
+                          onRefresh: _refresh,
+                          child: ListView.builder(
+                              itemCount: channels.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return ChannelText(
+                                  text: channels[index]['name'],
+                                  url: channels[index]['url'],
+                                );
+                              }),
+                        ),
             )
           ],
         ),
@@ -117,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _refresh() async {
     var data = await DatabaseHelper.instance.queryAll();
     setState(() {
-      channels = data;  
+      channels = data;
     });
   }
 }

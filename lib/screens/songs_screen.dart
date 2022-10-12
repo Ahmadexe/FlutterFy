@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fy/backend/duration_state.dart';
 import 'package:fy/utils/colors.dart';
 import 'package:fy/widgets/song_card.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

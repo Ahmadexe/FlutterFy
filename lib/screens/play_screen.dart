@@ -1,7 +1,11 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fy/backend/duration_state.dart';
 import 'package:fy/utils/colors.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PlayScreen extends StatefulWidget {
   final List<SongModel> songs;
@@ -13,6 +17,15 @@ class PlayScreen extends StatefulWidget {
 }
 
 class _PlayScreenState extends State<PlayScreen> {
+  final AudioPlayer _player = AudioPlayer();
+
+  Stream<DurationState> get _durationStateStream =>
+      Rx.combineLatest2<Duration, Duration?, DurationState>(
+          _player.positionStream,
+          _player.durationStream,
+          (position, duration) => DurationState(
+              position: position, total: duration ?? Duration.zero));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +61,53 @@ class _PlayScreenState extends State<PlayScreen> {
                     widget.songs[widget.index].title,
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
+                ),
+
+                const SizedBox(height: 40),
+                StreamBuilder<DurationState> (
+                  stream: _durationStateStream,
+                  builder: (context, snapshot) {
+                    final durationState = snapshot.data;
+                    final progress = durationState?.position?? Duration.zero;
+                    final total = durationState?.total ?? Duration.zero;
+
+                    return ProgressBar(
+                      progress: progress, 
+                      total: total,
+                      barHeight: 2,
+                      progressBarColor: Colors.white,
+                      thumbColor: Colors.white,
+                      baseBarColor: Colors.grey,
+                      timeLabelTextStyle: const TextStyle(
+                        fontSize: 0
+                      ),
+                      onSeek: (duration) {
+                        _player.seek(duration);
+                      },                       
+                    );
+                  }
+                ),
+                
+                StreamBuilder<DurationState> (
+                  stream: _durationStateStream,
+                  builder: (context, snapshot) {
+                    final durationState = snapshot.data;
+                    final progress = durationState?.position?? Duration.zero;
+                    final total = durationState?.total ?? Duration.zero;
+
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      IconButton(onPressed: (){}, icon: Icon(Icons.star_border, color: Colors.white,)),
+                      IconButton(onPressed: (){}, icon: Icon(Icons.skip_previous_rounded,color: Colors.white)),
+                      const CircleAvatar(
+                        backgroundColor: secondaryColor,
+                        child: Icon(Icons.pause, color: Colors.white),
+                      ),
+                      IconButton(onPressed: (){}, icon: Icon(Icons.skip_next_rounded, color: Colors.white)),
+                      IconButton(onPressed: (){}, icon: Icon(Icons.loop, color: Colors.white)),
+                    ],);
+                  }
                 ),
               ],
             ),
