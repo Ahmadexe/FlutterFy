@@ -1,4 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fy/backend/duration_state.dart';
@@ -19,12 +20,20 @@ class PlayScreen extends StatefulWidget {
 class _PlayScreenState extends State<PlayScreen> {
   final AudioPlayer _player = AudioPlayer();
   int playing = 0;
+  bool replay = false;
+
   Stream<DurationState> get _durationStateStream =>
       Rx.combineLatest2<Duration, Duration?, DurationState>(
           _player.positionStream,
           _player.durationStream,
           (position, duration) => DurationState(
               position: position, total: duration ?? Duration.zero));
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -52,6 +61,18 @@ class _PlayScreenState extends State<PlayScreen> {
         playing = 1;
       });
       await _player.play();
+    }
+  }
+
+  toggleRePlay() async {
+    if (replay == true) {
+      setState(() {
+        replay = false;
+      });
+    } else {
+      setState(() {
+        replay = true;
+      });
     }
   }
 
@@ -122,40 +143,76 @@ class _PlayScreenState extends State<PlayScreen> {
                       final progress = durationState?.position ?? Duration.zero;
                       final total = durationState?.total ?? Duration.zero;
 
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      if (progress == total) {
+                        if (replay == true) {
+                          playSong(widget.index);
+                        } else {
+                          if (kDebugMode) {
+                            print("Ended");
+                          }
+                        }
+                      }
+
+                      return Column(
                         children: [
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.star_border,
-                                color: Colors.white,
-                              )),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.skip_previous_rounded,
-                                  color: Colors.white)),
-                          GestureDetector(
-                            onTap: () async {
-                              await togglePlayPause();
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: secondaryColor,
-                              child: playing == 1
-                                  ? const Icon(Icons.pause, color: Colors.white)
-                                  : const Icon(
-                                      Icons.play_arrow,
-                                      color: Colors.white,
-                                    ),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                progress.toString(),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                total.toString(),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
                           ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.skip_next_rounded,
-                                  color: Colors.white)),
-                          IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.loop, color: Colors.white)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.star_border,
+                                    color: Colors.white,
+                                  )),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.skip_previous_rounded,
+                                      color: Colors.white)),
+                              GestureDetector(
+                                onTap: () async {
+                                  await togglePlayPause();
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: secondaryColor,
+                                  child: playing == 1
+                                      ? const Icon(Icons.pause,
+                                          color: Colors.white)
+                                      : const Icon(
+                                          Icons.play_arrow,
+                                          color: Colors.white,
+                                        ),
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.skip_next_rounded,
+                                      color: Colors.white)),
+                              IconButton(
+                                  onPressed: () {
+                                    toggleRePlay();
+                                  },
+                                  icon: !replay
+                                      ? const Icon(Icons.repeat,
+                                          color: Colors.white)
+                                      : const Icon(
+                                          Icons.repeat_on_outlined,
+                                          color: Colors.white,
+                                        )),
+                            ],
+                          ),
                         ],
                       );
                     }),
