@@ -33,19 +33,19 @@ class _SongCardState extends State<SongCard> {
         Get.to(PlayScreen(index: widget.index, songs: widget.songs));
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.header,
               style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.white),
             ),
             Text(widget.desc,
-                style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                style: const TextStyle(fontSize: 14, color: Colors.grey)),
             const Divider(
               color: secondaryColor,
             ),

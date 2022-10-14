@@ -49,6 +49,7 @@ class _PlayScreenState extends State<PlayScreen> {
           child: Center(
             child: Column(
               children: [
+                const SizedBox(height: 70,),
                 SvgPicture.asset(
                   "assets/images/songssc.svg",
                   height: 140,
