@@ -18,13 +18,42 @@ class PlayScreen extends StatefulWidget {
 
 class _PlayScreenState extends State<PlayScreen> {
   final AudioPlayer _player = AudioPlayer();
-
+  int playing = 0;
   Stream<DurationState> get _durationStateStream =>
       Rx.combineLatest2<Duration, Duration?, DurationState>(
           _player.positionStream,
           _player.durationStream,
           (position, duration) => DurationState(
               position: position, total: duration ?? Duration.zero));
+
+  @override
+  void initState() {
+    playSong(widget.index);
+    setState(() {
+      playing = 1;
+    });
+    super.initState();
+  }
+
+  playSong(int index) async {
+    String? uri = widget.songs[index].uri;
+    await _player.setAudioSource(AudioSource.uri(Uri.parse(uri!)));
+    await _player.play();
+  }
+
+  togglePlayPause() async {
+    if (playing == 1) {
+      await _player.pause();
+      setState(() {
+        playing = 0;
+      });
+    } else {
+      await _player.play();
+      setState(() {
+        playing = 1;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +78,9 @@ class _PlayScreenState extends State<PlayScreen> {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(height: 70,),
+                const SizedBox(
+                  height: 70,
+                ),
                 SvgPicture.asset(
                   "assets/images/songssc.svg",
                   height: 140,
@@ -63,53 +94,61 @@ class _PlayScreenState extends State<PlayScreen> {
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
-
                 const SizedBox(height: 40),
-                StreamBuilder<DurationState> (
-                  stream: _durationStateStream,
-                  builder: (context, snapshot) {
-                    final durationState = snapshot.data;
-                    final progress = durationState?.position?? Duration.zero;
-                    final total = durationState?.total ?? Duration.zero;
+                StreamBuilder<DurationState>(
+                    stream: _durationStateStream,
+                    builder: (context, snapshot) {
+                      final durationState = snapshot.data;
+                      final progress = durationState?.position ?? Duration.zero;
+                      final total = durationState?.total ?? Duration.zero;
 
-                    return ProgressBar(
-                      progress: progress, 
-                      total: total,
-                      barHeight: 2,
-                      progressBarColor: Colors.white,
-                      thumbColor: Colors.white,
-                      baseBarColor: Colors.grey,
-                      timeLabelTextStyle: const TextStyle(
-                        fontSize: 0
-                      ),
-                      onSeek: (duration) {
-                        _player.seek(duration);
-                      },                       
-                    );
-                  }
-                ),
-                
-                StreamBuilder<DurationState> (
-                  stream: _durationStateStream,
-                  builder: (context, snapshot) {
-                    final durationState = snapshot.data;
-                    final progress = durationState?.position?? Duration.zero;
-                    final total = durationState?.total ?? Duration.zero;
+                      return ProgressBar(
+                        progress: progress,
+                        total: total,
+                        barHeight: 2,
+                        progressBarColor: Colors.white,
+                        thumbColor: Colors.white,
+                        baseBarColor: Colors.grey,
+                        timeLabelTextStyle: const TextStyle(fontSize: 0),
+                        onSeek: (duration) {
+                          _player.seek(duration);
+                        },
+                      );
+                    }),
+                StreamBuilder<DurationState>(
+                    stream: _durationStateStream,
+                    builder: (context, snapshot) {
+                      final durationState = snapshot.data;
+                      final progress = durationState?.position ?? Duration.zero;
+                      final total = durationState?.total ?? Duration.zero;
 
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.star_border, color: Colors.white,)),
-                      IconButton(onPressed: (){}, icon: Icon(Icons.skip_previous_rounded,color: Colors.white)),
-                      const CircleAvatar(
-                        backgroundColor: secondaryColor,
-                        child: Icon(Icons.pause, color: Colors.white),
-                      ),
-                      IconButton(onPressed: (){}, icon: Icon(Icons.skip_next_rounded, color: Colors.white)),
-                      IconButton(onPressed: (){}, icon: Icon(Icons.loop, color: Colors.white)),
-                    ],);
-                  }
-                ),
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.star_border,
+                                color: Colors.white,
+                              )),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.skip_previous_rounded,
+                                  color: Colors.white)),
+                          const CircleAvatar(
+                            backgroundColor: secondaryColor,
+                            child: Icon(Icons.pause, color: Colors.white),
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.skip_next_rounded,
+                                  color: Colors.white)),
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.loop, color: Colors.white)),
+                        ],
+                      );
+                    }),
               ],
             ),
           ),

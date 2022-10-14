@@ -43,7 +43,7 @@ class _SongScreenState extends State<SongScreen> {
                     builder: (context, item) {
                       if (item.data == null) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(color: Colors.white,),
                         );
                       }
                       //no songs found
