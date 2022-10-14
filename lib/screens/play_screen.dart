@@ -43,15 +43,15 @@ class _PlayScreenState extends State<PlayScreen> {
 
   togglePlayPause() async {
     if (playing == 1) {
-      await _player.pause();
       setState(() {
         playing = 0;
       });
+      await _player.pause();
     } else {
-      await _player.play();
       setState(() {
         playing = 1;
       });
+      await _player.play();
     }
   }
 
@@ -135,9 +135,19 @@ class _PlayScreenState extends State<PlayScreen> {
                               onPressed: () {},
                               icon: Icon(Icons.skip_previous_rounded,
                                   color: Colors.white)),
-                          const CircleAvatar(
-                            backgroundColor: secondaryColor,
-                            child: Icon(Icons.pause, color: Colors.white),
+                          GestureDetector(
+                            onTap: () async {
+                              await togglePlayPause();
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: secondaryColor,
+                              child: playing == 1
+                                  ? const Icon(Icons.pause, color: Colors.white)
+                                  : const Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.white,
+                                    ),
+                            ),
                           ),
                           IconButton(
                               onPressed: () {},
